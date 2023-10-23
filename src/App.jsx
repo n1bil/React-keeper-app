@@ -1,14 +1,26 @@
-import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Note from "./components/Note";
-import notes from "./notes";
+import Footer from "./components/Footer";
+import CreateArea from "./components/CreateArea";
+import { useState } from "react";
 
 function App() {
+    const [tasks, addTask] = useState([]);
+
+    const addContentToArray = (inputContent) => {
+        addTask(() => ([ ...tasks, inputContent]));
+    }
+
+    const deleteTaskFromArray = (id) => {
+        addTask(() => tasks.filter((task, index) => index !== id));
+    }
+
     return (
         <div>
             <Header />
-            {notes.map(note => (
-            <Note key={note.key} title={note.title} content={note.content} />
+            <CreateArea onAdd={addContentToArray} />
+            {tasks.map((task, index) => (
+                <Note key={index} title={task.title} id={index} content={task.content} deleteTask={deleteTaskFromArray} />
             ))}
             <Footer />
         </div>
